@@ -19,6 +19,25 @@ public class ProductService {
         return restClient.get().uri("/products/{id}", id).retrieve().body(Product.class);
     }
     public ProductResponse search(String query) {
-        return restClient.get().uri(uriBuilder -> uriBuilder.path("/products/search").queryParam("q", query).build()).retrieve().body(ProductResponse.class);
+        return restClient.get().uri(uriBuilder -> uriBuilder.path(
+            "/products/search"
+        ).queryParam("q", query).build()).retrieve().body(ProductResponse.class);
     }
+    public List<Product> filter(String category) {
+        return restClient.get().uri(
+            uriBuilder -> uriBuilder.path(
+                "/products/filter")
+                .queryParam(
+                    "category", category)
+                    .build()).retrieve().body(
+                        new ParameterizedTypeReference<List<Product>>() {});
+    }
+
+public List<Product> filterByPrice(Double price) {
+    return restClient.get().uri(
+        uriBuilder -> uriBuilder.path(
+            "/products/filter/{price}")
+            .build(price)).retrieve().body(
+                new ParameterizedTypeReference<List<Product>>() {});
+}
 }

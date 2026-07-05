@@ -26,7 +26,7 @@ public class ProductService {
     public List<Product> filter(String category) {
         return restClient.get().uri(
             uriBuilder -> uriBuilder.path(
-                "/products/filter")
+                "/products/categories/{category}")
                 .queryParam(
                     "category", category)
                     .build()).retrieve().body(

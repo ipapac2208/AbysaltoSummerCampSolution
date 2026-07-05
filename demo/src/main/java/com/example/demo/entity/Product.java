@@ -1,11 +1,13 @@
-package com.example.demo.dto;
+package com.example.demo.entity;
 
 public class Product {
     private Integer id;
     private String ime;
     private String opis;
     private Double cijena;
-    private byte[] slika;
+    private String slika;
+    private String kategorija;
+
     public Integer getId() {
         return id;
     }
@@ -22,8 +24,11 @@ public class Product {
         return cijena;
     }
 
-    public byte[] getSlika() {
+    public String getSlika() {
         return slika;
+    }
+    public String getKategorija() {
+        return kategorija;
     }
 
     public void setId(Integer id) {
@@ -38,7 +43,10 @@ public class Product {
     public void setCijena(Double cijena) {
         this.cijena = cijena;
     }
-    public void setSlika(byte[] slika) {
+    public void setSlika(String slika) {
         this.slika = slika;
+    }
+    public void setKategorija(String kategorija) {
+        this.kategorija = kategorija;
     }
 }

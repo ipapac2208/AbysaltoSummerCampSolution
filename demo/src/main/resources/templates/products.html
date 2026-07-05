@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Products</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+        }
+
+        .container {
+            width: 90%;
+            margin: auto;
+            padding-top: 20px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        .card img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .price {
+            font-weight: bold;
+            color: green;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        input {
+            padding: 8px;
+            width: 250px;
+        }
+
+        button {
+            padding: 8px 12px;
+            cursor: pointer;
+        }
+        .card-link {
+        text-decoration: none;
+        color: inherit;
+        }
+
+        .card-link:hover .card {
+        transform: scale(1.03);
+        transition: 0.2s ease;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Product List</h1>
+
+    <!-- SEARCH -->
+    <form action="/products-page" method="get">
+        <input type="text"
+               name="query"
+               placeholder="Search products..."
+               th:value="${param.query}" />
+        <button type="submit">Search</button>
+     <!-- CATEGORY FILTER -->
+    <input type="text"
+           name="category"
+           placeholder="Category..."
+           th:value="${param.category}" />
+
+    <!-- PRICE FILTER -->
+    <input type="number"
+           step="0.01"
+           name="price"
+           placeholder="Max price..."
+           th:value="${param.price}" />
+
+    <button type="submit">Apply Filters</button>
+</form>
+
+    <!-- GRID -->
+<div class="grid">
+
+    <a th:each="product : ${products}"
+       th:href="@{/products-page/{id}(id=${product.id})}"
+       class="card-link">
+
+        <div class="card">
+            <img th:src="${product.slika}" alt="product image"/>
+
+            <h3 th:text="${product.ime}">Product name</h3>
+
+            <p th:text="${product.opis}">Description</p>
+
+            <p class="price" th:text="${product.cijena + ' €'}">Price</p>
+
+            <p class="category" th:text="${product.kategorija}">Category</p>
+        </div>
+
+    </a>
+
+</div>
+
+</div>
+
+</body>
+</html>

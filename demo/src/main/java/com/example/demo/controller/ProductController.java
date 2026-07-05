@@ -7,10 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.dto.Product;
-import com.example.demo.dto.ProductResponse;
+import com.example.demo.entity.Product;
 import com.example.demo.service.ProductService;
-
 
 @RestController
 @RequestMapping("/products")
@@ -23,14 +21,16 @@ public class ProductController {
     public List<Product> getProducts() {
         return productService.getProducts();
     }
+
     @GetMapping("/{id}")
     public Product getProductById(@PathVariable Integer id) {
         return productService.getProductsById(id);
     }
     @GetMapping("/search")
-    public ProductResponse search(@RequestParam String query) {
+    public List<Product> search(@RequestParam String query) {
         return productService.search(query);
     }
+    
     @GetMapping("/filter")
     public List<Product> filter(@RequestParam String category) {
         return productService.filter(category);

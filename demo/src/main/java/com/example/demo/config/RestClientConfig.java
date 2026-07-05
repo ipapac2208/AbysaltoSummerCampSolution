@@ -7,6 +7,7 @@ import org.springframework.web.client.RestClient;
 public class RestClientConfig {
     @Bean
     public RestClient restClient() {
-        return RestClient.builder().baseUrl("https://dummyjson.com").build();
+        return RestClient.builder().baseUrl("https://dummyjson.com/c/c9f2-2627-4947-8538").build();
+        
     }
 }

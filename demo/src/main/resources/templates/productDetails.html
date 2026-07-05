@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${product.ime}">Product Details</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            margin: 40px;
+        }
+
+        .product-container {
+            max-width: 900px;
+            margin: auto;
+            display: flex;
+            gap: 40px;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 0 12px rgba(0,0,0,.1);
+        }
+
+        .product-image {
+            flex: 1;
+        }
+
+        .product-image img {
+            width: 100%;
+            border-radius: 10px;
+        }
+
+        .product-info {
+            flex: 1;
+        }
+
+        h1 {
+            margin-top: 0;
+        }
+
+        .price {
+            color: green;
+            font-size: 30px;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+
+        .description {
+            line-height: 1.6;
+            color: #555;
+        }
+
+        .id {
+            color: gray;
+            margin-top: 20px;
+        }
+
+        .back-button {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 10px 18px;
+            background: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+        }
+
+        .back-button:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+<div class="product-container">
+
+    <div class="product-image">
+        <img th:src="${product.slika}" th:alt="${product.ime}">
+    </div>
+
+    <div class="product-info">
+        <h1 th:text="${product.ime}">Product name</h1>
+
+        <div class="price">
+            €<span th:text="${product.cijena}">0.00</span>
+        </div>
+
+        <p class="description" th:text="${product.opis}">
+            Product description
+        </p>
+
+        <p class="id">
+            Product ID:
+            <span th:text="${product.id}">1</span>
+        </p>
+
+        <a th:href="@{/products-page}" class="back-button">
+            ← Back to Products
+        </a>
+    </div>
+
+</div>
+
+</body>
+</html>

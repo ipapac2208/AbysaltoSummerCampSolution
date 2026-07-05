@@ -1,10 +1,12 @@
 package com.example.demo.service;
+import java.util.Arrays;
 import java.util.List;
-import com.example.demo.dto.Product;
-import com.example.demo.dto.ProductResponse;
-import org.springframework.web.client.RestClient;
+
 import org.springframework.stereotype.Service;
-import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.web.client.RestClient;
+
+import com.example.demo.dto.ProductResponse;
+import com.example.demo.entity.Product;
 
 @Service
 public class ProductService {
@@ -13,31 +15,57 @@ public class ProductService {
         this.restClient = restClient;
     }
     public List<Product> getProducts() {
-        return restClient.get().uri("/products").retrieve().body(new ParameterizedTypeReference<List<Product>>() {});
-    }
+    Product[] products = restClient.get()
+            .uri("/products")
+            .retrieve()
+            .body(Product[].class);
+
+    return Arrays.asList(products);
+}
     public Product getProductsById(Integer id) {
-        return restClient.get().uri("/products/{id}", id).retrieve().body(Product.class);
-    }
-    public ProductResponse search(String query) {
-        return restClient.get().uri(uriBuilder -> uriBuilder.path(
-            "/products/search"
-        ).queryParam("q", query).build()).retrieve().body(ProductResponse.class);
-    }
+    List <Product> products = Arrays.asList(restClient.get()
+            .uri("/products/{id}", id)
+            .retrieve()
+            .body(Product[].class));
+    
+    return products.stream()
+        .filter(product -> product.getId().equals(id))
+        .findFirst()
+        .orElse(null);}
+
+    public List<Product> search(String query) {
+    Product[] response = restClient.get()
+            .uri("/products")
+            .retrieve()
+            .body(Product[].class);
+
+    return Arrays.stream(response)
+            .filter(p -> p.getIme().toLowerCase().contains(query.toLowerCase()))
+            .toList();
+}
     public List<Product> filter(String category) {
-        return restClient.get().uri(
-            uriBuilder -> uriBuilder.path(
-                "/products/categories/{category}")
-                .queryParam(
-                    "category", category)
-                    .build()).retrieve().body(
-                        new ParameterizedTypeReference<List<Product>>() {});
-    }
+    String json = restClient.get()
+    .uri("/products/categories/{category}?q=test", category)
+    .retrieve()
+    .body(String.class);
+    System.out.println(json);
+        return restClient.get()
+        .uri("/products/categories/{category}", category)
+        .retrieve()
+        .body(ProductResponse.class).getProducts();
+}
 
 public List<Product> filterByPrice(Double price) {
+    String json = restClient.get()
+    .uri("/products/filter/{price}?q=test", price)
+    .retrieve()
+    .body(String.class);
+
+    System.out.println(json);
     return restClient.get().uri(
         uriBuilder -> uriBuilder.path(
             "/products/filter/{price}")
             .build(price)).retrieve().body(
-                new ParameterizedTypeReference<List<Product>>() {});
+               ProductResponse.class).getProducts();
 }
 }
